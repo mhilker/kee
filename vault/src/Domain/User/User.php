@@ -3,37 +3,20 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
+use JetBrains\PhpStorm\ArrayShape;
 use JsonSerializable;
 
 class User implements JsonSerializable
 {
-    /**
-     * @var int|null
-     */
-    private $id;
+    private ?string $id;
 
-    /**
-     * @var string
-     */
-    private $username;
+    private string $username;
 
-    /**
-     * @var string
-     */
-    private $firstName;
+    private string $firstName;
 
-    /**
-     * @var string
-     */
-    private $lastName;
+    private string $lastName;
 
-    /**
-     * @param int|null  $id
-     * @param string    $username
-     * @param string    $firstName
-     * @param string    $lastName
-     */
-    public function __construct(?int $id, string $username, string $firstName, string $lastName)
+    public function __construct(?string $id, string $username, string $firstName, string $lastName)
     {
         $this->id = $id;
         $this->username = strtolower($username);
@@ -41,42 +24,33 @@ class User implements JsonSerializable
         $this->lastName = ucfirst($lastName);
     }
 
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @return string
-     */
     public function getFirstName(): string
     {
         return $this->firstName;
     }
 
-    /**
-     * @return string
-     */
     public function getLastName(): string
     {
         return $this->lastName;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    #[ArrayShape([
+        'id' => "string|null",
+        'username' => "string",
+        'firstName' => "string",
+        'lastName' => "string",
+    ])]
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,

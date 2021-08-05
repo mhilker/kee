@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
+use App\Domain\ID;
+
 interface UserRepository
 {
     /**
@@ -11,9 +13,7 @@ interface UserRepository
     public function findAll(): array;
 
     /**
-     * @param int $id
-     * @return User
      * @throws UserNotFoundException
      */
-    public function findUserOfId(int $id): User;
+    public function findUserOfId(ID $id): User;
 }

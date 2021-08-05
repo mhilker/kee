@@ -10,9 +10,6 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 class SessionMiddleware implements Middleware
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(Request $request, RequestHandler $handler): Response
     {
         if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
