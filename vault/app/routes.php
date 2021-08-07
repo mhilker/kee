@@ -5,8 +5,6 @@ use App\Application\Actions\CommandAction;
 use App\Application\Actions\EntryDetailAction;
 use App\Application\Actions\EntryListAction;
 use App\Application\Actions\EntryListHistoryAction;
-use App\Application\Actions\UserListAction;
-use App\Application\Actions\UserDetailAction;
 use App\Application\Actions\GraphListAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -25,11 +23,6 @@ return static function (App $app) {
     });
 
     $app->put('/command/{id}/{name}', CommandAction::class);
-
-    $app->group('/user', function (Group $group) {
-        $group->get('', UserListAction::class);
-        $group->get('/{id}', UserDetailAction::class);
-    });
 
     $app->group('/graph', function (Group $group) {
         $group->get('', GraphListAction::class);

@@ -1,13 +1,55 @@
 version: '3.7'
 
+volumes:
+    mysql-data:
+
 services:
-    slim:
-        image: php:8-alpine
-        working_dir: /var/www
-        command: php -S 0.0.0.0:8080 -t public public/index.php
+    web:
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        depends_on:
+            - php
         environment:
-            docker: "true"
+            - PHP_HOSTNAME=php
         ports:
-            - 8080:8080
+            - "8080:80"
         volumes:
-            - .:/var/www
+            - .:/app/
+
+    php:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+            target: php
+            args:
+                - COMPOSER_AUTH=${COMPOSER_AUTH}
+        environment:
+            - MYSQL_HOST=db
+            - MYSQL_PORT=3306
+            - MYSQL_USERNAME=root
+            - MYSQL_PASSWORD=password
+            - MYSQL_DATABASE=event_store
+        volumes:
+            - .:/app/
+
+    db:
+        image: mysql:8.0
+        environment:
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_DATABASE=event_store
+        ports:
+            - 33306:3306
+        volumes:
+            - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+            - mysql-data:/var/lib/mysql:rw
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:5.0
+        ports:
+            - 8081:80
+        environment:
+            - PMA_HOST=db
+            - PMA_PORT=3306
+            - PMA_USER=root
+            - PMA_PASSWORD=password

@@ -1,0 +1,6 @@
+/*.local
+/.git/
+/.idea/
+/.phpunit.result.cache
+/tmp
+/vendor/

@@ -8,11 +8,17 @@ use App\Application\Response\ResponseEmitter;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
 
 final class Application
 {
     public static function run(): void
     {
+        $whoops = new Run();
+        $whoops->pushHandler(new PrettyPageHandler());
+        $whoops->register();
+
         // Instantiate PHP-DI ContainerBuilder
         $containerBuilder = new ContainerBuilder();
 
@@ -52,7 +58,7 @@ final class Application
         $app->addRoutingMiddleware();
 
         // Add Error Middleware
-        $app->addErrorMiddleware(true, true, true);
+//        $app->addErrorMiddleware(true, true, true);
 
         // Run App & Emit Response
         $response = $app->handle($request);
